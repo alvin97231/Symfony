@@ -1,4 +1,4 @@
 rest_homepage:
-    path:     /home/{foo}/{foofoo}
+    path:     /utilisateur/{foo}
     defaults: { _controller: restBundle:Default:index }
     methods:  [GET]
