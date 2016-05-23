@@ -1,4 +1,9 @@
-rest_homepage:
-    path:     /utilisateur/{foo}
-    defaults: { _controller: restBundle:Default:index }
+rest_user_add:
+    path:     /utilisateur/add
+    defaults: { _controller: restBundle:Default:add }
+    methods:  [POST]
+
+rest_user_show:
+    path:     /utilisateur/get
+    defaults: { _controller: restBundle:Default:show }
     methods:  [GET]
