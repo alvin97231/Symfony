@@ -1,9 +1,14 @@
 rest_user_add:
-    path:     /utilisateur/add
-    defaults: { _controller: restBundle:Default:add }
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:add }
     methods:  [POST]
 
-rest_user_show:
-    path:     /utilisateur/get
-    defaults: { _controller: restBundle:Default:show }
+rest_user_get:
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:get }
     methods:  [GET]
+
+rest_user_delete:
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:delete }
+    methods:  [DELETE]
