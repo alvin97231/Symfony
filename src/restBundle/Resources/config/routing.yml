@@ -36,3 +36,24 @@ rest_idee_delete:
 rest_idee_update:
     path:     /idee
     defaults: { _controller: restBundle:Idee:update }
+    methods:  [PUT]
+
+rest_commentaire_add:
+    path:     /commentaire
+    defaults: { _controller: restBundle:Commentaire:add }
+    methods:  [POST]
+
+rest_commentaire_get:
+    path:     /commentaire
+    defaults: { _controller: restBundle:Commentaire:get }
+    methods:  [GET]
+
+rest_commentaire_delete:
+    path:     /commentaire
+    defaults: { _controller: restBundle:Commentaire:delete }
+    methods:  [DELETE]
+
+rest_commentaire_update:
+    path:     /commentaire
+    defaults: { _controller: restBundle:Commentaire:update }
+    methods:  [PUT]
