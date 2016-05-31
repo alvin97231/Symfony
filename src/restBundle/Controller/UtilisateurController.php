@@ -18,23 +18,28 @@ class UtilisateurController extends Controller
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository('restBundle:utilisateur');
 
-        $foo = $request->query->get('foo');
+        $login = $request->query->get('login');
+        $pwd = $request->query->get('pwd');
 
-        $users = $repository->findByLogin($foo);
+        $users = $repository->findByLogin($login);
 
         if(!$users)
         {
             throw $this->createNotFoundException(
-                'No user found for Login '.$foo
+                'No user for this login'
+            );
+        }
+        else if($users[0]->getPassword() != $pwd)
+        {
+            throw $this->createNotFoundException(
+                'Wrong password !!'
             );
         }
         else
         {
             $u = $users[0];
             $arr['State'] = 'Get';
-            $arr['Id'] = $u->getId();
             $arr['Login'] = $u->getLogin();
-            $arr['Password'] = $u->getPassword();
             $arr['Mail'] = $u->getMail();
             $arr['Nom'] = $u->getNom();
             $arr['Prenom'] = $u->getPrenom();
@@ -54,16 +59,21 @@ class UtilisateurController extends Controller
         $em = $doctrine->getManager();
         $repository = $doctrine->getRepository('restBundle:utilisateur');
 
-        $foo = $request->get('login');
+        $login  =    $request->get('login');
+        $pwd    =    $request->get('pwd');
+        $prenom =    $request->get('prenom');
+        $nom    =    $request->get('nom');
+        $mail   =    $request->get('mail');
 
-        if(!$foo)
+        if(!$login || !$pwd || !$prenom || !$nom || !$mail)
         {
             throw $this->createNotFoundException(
-                'missing parameters in http request: login is null'
+                'Missing parameters in http request'
             );
         }
 
-        $users = $repository->findByLogin($foo);
+        $users = $repository->findByLogin($login);
+
         if($users)
         {
             throw $this->createNotFoundException(
@@ -72,37 +82,17 @@ class UtilisateurController extends Controller
         }
 
         $u = new utilisateur();
-        $u->setLogin($foo)
-            ->setPassword($foo.'_password')
-            ->setMail($foo.'@test.fr')
-            ->setNom('nom')
-            ->setPrenom('prenom');
+        $u  ->setLogin($login)
+            ->setPassword($pwd)
+            ->setMail($mail)
+            ->setNom($nom)
+            ->setPrenom($prenom);
         $em->persist($u);
         $em->flush();
 
-        $users = $repository->findByLogin($foo);
-        if(!$users)
-        {
-            throw $this->createNotFoundException(
-                'No user found for Login:'.$foo
-            );
-        }
-        else
-        {
-            $u = $users[0];
-            $arr['State'] = 'Created';
-            $arr['Id'] = $u->getId();
-            $arr['Login'] = $u->getLogin();
-            $arr['Password'] = $u->getPassword();
-            $arr['Mail'] = $u->getMail();
-            $arr['Nom'] = $u->getNom();
-            $arr['Prenom'] = $u->getPrenom();
-
-            $response = new Response();
-            $response->setContent(json_encode($arr));
-            $response->setStatusCode(Response::HTTP_OK);
-            $response->headers->set('Content-Type', 'text/html');
-        }
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/html');
 
         return $response;
     }
@@ -113,32 +103,23 @@ class UtilisateurController extends Controller
         $em = $doctrine->getManager();
         $repository = $doctrine->getRepository('restBundle:utilisateur');
 
-        $foo = $request->query->get('login');
+        $login = $request->query->get('login');
 
-        $users = $repository->findByLogin($foo);
+        $users = $repository->findByLogin($login);
 
         if(!$users)
         {
             throw $this->createNotFoundException(
-                'No user found for Login '.$foo
+                'No user found for Login '.$login
             );
         }
         else
         {
             $u = $users[0];
-            $arr['State'] = 'Deleted';
-            $arr['Id'] = $u->getId();
-            $arr['Login'] = $u->getLogin();
-            $arr['Password'] = $u->getPassword();
-            $arr['Mail'] = $u->getMail();
-            $arr['Nom'] = $u->getNom();
-            $arr['Prenom'] = $u->getPrenom();
-
             $em->remove($u);
             $em->flush();
 
             $response = new Response();
-            $response->setContent(json_encode($arr));
             $response->setStatusCode(Response::HTTP_OK);
             $response->headers->set('Content-Type', 'text/html');
         }
