@@ -35,6 +35,11 @@ class idee
      */
     private $contenu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Utilisateur", inversedBy="idee")
+     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
+     */
+    private $utilisateur;
 
     /**
      * Get id
@@ -90,5 +95,28 @@ class idee
     public function getContenu()
     {
         return $this->contenu;
+    }
+
+    /**
+     * Set utilisateur
+     *
+     * @param \restBundle\Entity\Utilisateur $utilisateur
+     * @return idee
+     */
+    public function setUtilisateur(\restBundle\Entity\Utilisateur $utilisateur = null)
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Get utilisateur
+     *
+     * @return \restBundle\Entity\Utilisateur 
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
     }
 }

@@ -56,6 +56,15 @@ class utilisateur
      */
     private $mail;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Idee", mappedBy="utilisateur")
+     */
+    private $idees;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -180,5 +189,38 @@ class utilisateur
     public function getMail()
     {
         return $this->mail;
+    }
+
+    /**
+     * Add idees
+     *
+     * @param \restBundle\Entity\Idee $idees
+     * @return utilisateur
+     */
+    public function addIdee(\restBundle\Entity\Idee $idees)
+    {
+        $this->idees[] = $idees;
+
+        return $this;
+    }
+
+    /**
+     * Remove idees
+     *
+     * @param \restBundle\Entity\Idee $idees
+     */
+    public function removeIdee(\restBundle\Entity\Idee $idees)
+    {
+        $this->idees->removeElement($idees);
+    }
+
+    /**
+     * Get idees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdees()
+    {
+        return $this->idees;
     }
 }
