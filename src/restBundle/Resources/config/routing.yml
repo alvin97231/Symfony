@@ -13,6 +13,11 @@ rest_user_delete:
     defaults: { _controller: restBundle:Utilisateur:delete }
     methods:  [DELETE]
 
+rest_user_update:
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:update }
+    methods:  [PUT]
+
 rest_idee_add:
     path:     /idee
     defaults: { _controller: restBundle:Idee:add }
@@ -31,8 +36,3 @@ rest_idee_delete:
 rest_idee_update:
     path:     /idee
     defaults: { _controller: restBundle:Idee:update }
-
-rest_user_update:
-    path:     /utilisateur
-    defaults: { _controller: restBundle:Utilisateur:update }
-    methods:  [PUT]
