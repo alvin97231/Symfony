@@ -12,3 +12,8 @@ rest_user_delete:
     path:     /utilisateur
     defaults: { _controller: restBundle:Utilisateur:delete }
     methods:  [DELETE]
+
+rest_user_update:
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:update }
+    methods:  [PUT]
