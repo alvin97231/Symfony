@@ -13,22 +13,7 @@ rest_user_delete:
     defaults: { _controller: restBundle:Utilisateur:delete }
     methods:  [DELETE]
 
-rest_idee_add:
-    path:     /idee
-    defaults: { _controller: restBundle:Idee:add }
-    methods:  [POST]
-
-rest_idee_get:
-    path:     /idee
-    defaults: { _controller: restBundle:Idee:get }
-    methods:  [GET]
-
-rest_idee_delete:
-    path:     /idee
-    defaults: { _controller: restBundle:Idee:delete }
-    methods:  [DELETE]
-
-rest_idee_update:
-    path:     /idee
-    defaults: { _controller: restBundle:Idee:update }
+rest_user_update:
+    path:     /utilisateur
+    defaults: { _controller: restBundle:Utilisateur:update }
     methods:  [PUT]
