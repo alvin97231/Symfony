@@ -39,7 +39,11 @@ class IdeeController extends Controller
             $arr['Id'] = $i->getId();
             $arr['Titre'] = $i->getTitre();
             $arr['Contenu'] = $i->getContenu();
-            $arr['Utilisateur'] = $i->getUtilisateur();
+            $arr['Utilisateur'] = array('id' => $i->getUtilisateur()->getId(),
+                                        'login' => $i->getUtilisateur()->getLogin(),
+                                        'nom' => $i->getUtilisateur()->getNom(),
+                                        'prenom' => $i->getUtilisateur()->getPrenom(),
+                                        'mail' => $i->getUtilisateur()->getMail());
 
             $response = new Response();
             $response->setContent(json_encode($arr));
@@ -68,7 +72,8 @@ class IdeeController extends Controller
             );
         }
 
-        $utilisateur = $repoUser->findById($utilisateurId);
+        $tabUtilisateur = $repoUser->findById($utilisateurId);
+        $utilisateur = $tabUtilisateur[0];
         /**
          * findBy ça te renvoie un tableau
          * parce que c'est prévu pour te renvoyer toutes les lignes qui correspondent à ta recherche
