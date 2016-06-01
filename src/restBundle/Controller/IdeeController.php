@@ -69,7 +69,12 @@ class IdeeController extends Controller
         }
 
         $utilisateur = $repoUser->findById($utilisateurId);
-
+        /**
+         * findBy ça te renvoie un tableau
+         * parce que c'est prévu pour te renvoyer toutes les lignes qui correspondent à ta recherche
+         * il faut que tu utilise $utilisateur[0]
+         **/
+        
         $idee = $repository->findOneBy(
             array('titre' => $titre,'contenu' => $contenu, 'utilisateur' => $utilisateur));
 

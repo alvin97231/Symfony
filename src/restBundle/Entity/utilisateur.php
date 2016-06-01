@@ -3,7 +3,7 @@
 namespace restBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * utilisateur
  *
@@ -57,7 +57,7 @@ class utilisateur
     private $mail;
 
     /**
-     * @ORM\OneToMany(targetEntity="Idee", mappedBy="utilisateur")
+     * @ORM\OneToMany(targetEntity="idee", mappedBy="utilisateur")
      */
     private $idees;
 
