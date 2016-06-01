@@ -36,7 +36,7 @@ class idee
     private $contenu;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Utilisateur", inversedBy="idee")
+     * @ORM\ManyToOne(targetEntity="\restBundle\Entity\utilisateur", inversedBy="idee")
      * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
      */
     private $utilisateur;
@@ -103,7 +103,7 @@ class idee
      * @param \restBundle\Entity\Utilisateur $utilisateur
      * @return idee
      */
-    public function setUtilisateur(\restBundle\Entity\Utilisateur $utilisateur = null)
+    public function setUtilisateur(\restBundle\Entity\Utilisateur $utilisateur)
     {
         $this->utilisateur = $utilisateur;
 

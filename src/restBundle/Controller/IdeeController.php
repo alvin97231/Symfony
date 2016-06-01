@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\idee;
+use restBundle\Entity\utilisateur;
+
 class IdeeController extends Controller
 {
     public function getAction(Request $request)
@@ -37,6 +39,7 @@ class IdeeController extends Controller
             $arr['Id'] = $i->getId();
             $arr['Titre'] = $i->getTitre();
             $arr['Contenu'] = $i->getContenu();
+            $arr['Utilisateur'] = $i->getUtilisateur();
 
             $response = new Response();
             $response->setContent(json_encode($arr));
@@ -52,19 +55,23 @@ class IdeeController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $doctrine->getRepository('restBundle:idee');
+        $repoUser = $doctrine->getRepository('restBundle:utilisateur');
 
         $titre  = $request->get('titre');
         $contenu = $request->get('contenu');
+        $utilisateurId = $request->get('utilisateur');
 
-        if( !$titre || !$contenu)
+        if( !$titre || !$contenu || !$utilisateurId)
         {
             throw $this->createNotFoundException(
                 'Missing parameters in http request'
             );
         }
 
+        $utilisateur = $repoUser->findById($utilisateurId);
+
         $idee = $repository->findOneBy(
-            array('titre' => $titre,'contenu' => $contenu));
+            array('titre' => $titre,'contenu' => $contenu, 'utilisateur' => $utilisateur));
 
         if($idee)
         {
@@ -75,7 +82,8 @@ class IdeeController extends Controller
 
         $i = new idee();
         $i  ->setTitre($titre)
-            ->setContenu($contenu);
+            ->setContenu($contenu)
+            ->setUtilisateur($utilisateur);
         $em->persist($i);
         $em->flush();
 
