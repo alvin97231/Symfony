@@ -21,12 +21,12 @@ rest_user_update:
 rest_user_login:
     path:     /authentification
     defaults: { _controller: restBundle:Utilisateur:login }
-    methods:  [POST]
+    methods:  [GET]
 
 rest_user_logout:
     path:     /authentification
     defaults: { _controller: restBundle:Utilisateur:logout }
-    methods:  [POST]
+    methods:  [GET]
 
 rest_idee_add:
     path:     /idee
