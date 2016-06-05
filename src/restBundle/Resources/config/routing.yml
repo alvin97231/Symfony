@@ -57,3 +57,23 @@ rest_commentaire_update:
     path:     /commentaire
     defaults: { _controller: restBundle:Commentaire:update }
     methods:  [PUT]
+
+rest_vote_commentaire_add:
+    path:     /vote_commentaire
+    defaults: { _controller: restBundle:Vote_Commentaire:add }
+    methods:  [POST]
+
+rest_vote_commentaire_delete:
+    path:     /vote_commentaire
+    defaults: { _controller: restBundle:Vote_Commentaire:delete }
+    methods:  [DELETE]
+
+rest_vote_idee_add:
+    path:     /vote_idee
+    defaults: { _controller: restBundle:Vote_Idee:add }
+    methods:  [POST]
+
+rest_vote_idee_delete:
+    path:     /vote_idee
+    defaults: { _controller: restBundle:Vote_Idee:delete }
+    methods:  [DELETE]
