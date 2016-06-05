@@ -42,6 +42,18 @@ class idee
     private $utilisateur;
 
     /**
+     * @ORM\OneToMany(targetEntity="vote_idee", mappedBy="idee")
+     */
+    private $votes;
+
+    /**
+     * utilisateur constructor.
+     */
+    public function __construct()
+    {
+        $this->votes_idee = new ArrayCollection();
+    }
+    /**
      * Get id
      *
      * @return integer 
@@ -118,5 +130,38 @@ class idee
     public function getUtilisateur()
     {
         return $this->utilisateur;
+    }
+
+    /**
+     * Add votes
+     *
+     * @param \restBundle\Entity\vote_idee $votes
+     * @return idee
+     */
+    public function addVote(\restBundle\Entity\vote_idee $votes)
+    {
+        $this->votes[] = $votes;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes
+     *
+     * @param \restBundle\Entity\vote_idee $votes
+     */
+    public function removeVote(\restBundle\Entity\vote_idee $votes)
+    {
+        $this->votes->removeElement($votes);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }

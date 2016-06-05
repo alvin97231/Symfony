@@ -35,6 +35,18 @@ class commentaire
     private $utilisateur;
 
     /**
+     * @ORM\OneToMany(targetEntity="vote_commentaire", mappedBy="commentaire")
+     */
+    private $votes;
+
+    /**
+     * utilisateur constructor.
+     */
+    public function __construct()
+    {
+        $this->votes_idee = new ArrayCollection();
+    }
+    /**
      * Get id
      *
      * @return integer 
@@ -88,5 +100,38 @@ class commentaire
     public function getUtilisateur()
     {
         return $this->utilisateur;
+    }
+
+    /**
+     * Add votes
+     *
+     * @param \restBundle\Entity\vote_commentaire $votes
+     * @return commentaire
+     */
+    public function addVote(\restBundle\Entity\vote_commentaire $votes)
+    {
+        $this->votes[] = $votes;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes
+     *
+     * @param \restBundle\Entity\vote_commentaire $votes
+     */
+    public function removeVote(\restBundle\Entity\vote_commentaire $votes)
+    {
+        $this->votes->removeElement($votes);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }
