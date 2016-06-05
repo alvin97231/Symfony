@@ -12,14 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class utilisateurRepository extends EntityRepository
 {
-    function login($login,$pwd){
+    function login($login,$pwd,$controller){
         if(empty($_COOKIE['authentification'])){
             if(connexion_ok($login,$pwd) == TRUE) { //fonction fictive....
                 $_SESSION['logged'] = 1;
                 session_regenerate_id();
                 $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
                 setToken($jeton);
-                $em = $this->getDoctrine()->getManager();
+                $em = $controller->getDoctrine()->getManager();
                 $em->flush();
                 $user = encrypte($login); //On hash le nom d'utilisateur
                 $vie = time() + 60; //durée de vie (ici, 7 jours)
