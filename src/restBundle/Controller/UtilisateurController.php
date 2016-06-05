@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\utilisateur;
 
+
 /**
  * Class UtilisateurController
  * @package restBundle\Controller
@@ -225,6 +226,41 @@ class UtilisateurController extends Controller
             $response->headers->set('Content-Type', 'text/html');
         }
         return $response;
+    }
+
+    public function loginAction(Request $request)
+    {
+        $login = $request->query->get('login');
+        $pwd = $request->query->get('pwd');
+
+        if(!$login || !$pwd)
+        {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
+
+        $doctrine = $this->getDoctrine();
+        $em = $doctrine->getManager();
+        $repository = $doctrine->getRepository('restBundle:utilisateur');
+        
+        $users = $repository->findOneBy(array('login' => $login,'password' => $pwd));
+
+        $users->login($login,$this);
+
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/html');
+
+        return $response;
+    }
+
+    public function logoutAction(Request $request)
+    {
+        $deco = $request->query->get('deco');
+        if($deco == true){
+            logout();
+        }
     }
 
     
