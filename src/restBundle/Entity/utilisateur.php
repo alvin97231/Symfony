@@ -373,4 +373,32 @@ class utilisateur
     {
         return $this->votes_idee;
     }
+
+    public function login($controller){
+        if(empty($_COOKIE['authentification'])){
+            $_SESSION['logged'] = 1;
+            session_regenerate_id();
+            $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
+            $this->setToken($jeton);
+            $em = $controller->getDoctrine()->getManager();
+            $em->flush();
+            $vie = time() + 60; //durée de vie (ici, 7 jours)
+            setcookie('authentification', "$jeton", $vie); //on crée le cookie
+            return TRUE;
+        }else{
+            $jeton = $_COOKIE['authentification'];
+            if($jeton == $this->getToken()){
+                $_SESSION['logged'] = 1;
+                session_regenerate_id();
+                return TRUE;
+            }else{
+                return FALSE;
+            }
+        }
+    }
+
+    public function logout(){
+        $_SESSION['logged'] = 0;
+    }
+
 }

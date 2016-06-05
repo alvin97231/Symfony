@@ -18,6 +18,16 @@ rest_user_update:
     defaults: { _controller: restBundle:Utilisateur:update }
     methods:  [PUT]
 
+rest_user_login:
+    path:     /authentification
+    defaults: { _controller: restBundle:Utilisateur:login }
+    methods:  [POST]
+
+rest_user_logout:
+    path:     /authentification
+    defaults: { _controller: restBundle:Utilisateur:logout }
+    methods:  [POST]
+
 rest_idee_add:
     path:     /idee
     defaults: { _controller: restBundle:Idee:add }
