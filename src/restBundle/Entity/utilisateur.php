@@ -66,6 +66,9 @@ class utilisateur
      */
     private $commentaires;
 
+    /**
+     * utilisateur constructor.
+     */
     public function __construct()
     {
         $this->idees = new ArrayCollection();

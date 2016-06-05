@@ -14,8 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\idee;
 use restBundle\Entity\utilisateur;
 
+/**
+ * Class IdeeController
+ * @package restBundle\Controller
+ */
 class IdeeController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function getAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -54,6 +62,10 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function addAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -104,6 +116,10 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -133,6 +149,10 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function updateAction(Request $request)
     {
         $id = $request->query->get('id');

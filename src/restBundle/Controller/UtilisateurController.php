@@ -11,8 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\utilisateur;
+
+/**
+ * Class UtilisateurController
+ * @package restBundle\Controller
+ */
 class UtilisateurController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function getAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -52,6 +61,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function addAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -96,6 +109,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -132,6 +149,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function updateAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
