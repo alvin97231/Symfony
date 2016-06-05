@@ -11,8 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\utilisateur;
+
+/**
+ * Class UtilisateurController
+ * @package restBundle\Controller
+ */
 class UtilisateurController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function getAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -20,6 +29,13 @@ class UtilisateurController extends Controller
 
         $login = $request->query->get('login');
         $pwd = $request->query->get('pwd');
+
+        if(!$login || !$pwd)
+        {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
 
         $users = $repository->findByLogin($login);
 
@@ -52,6 +68,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function addAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -67,7 +87,7 @@ class UtilisateurController extends Controller
         if(!$login || !$pwd || !$prenom || !$nom || !$mail)
         {
             throw $this->createNotFoundException(
-                'Missing parameters in http request'
+                'Missing parameters in HTTP request'
             );
         }
 
@@ -96,6 +116,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -106,8 +130,13 @@ class UtilisateurController extends Controller
         $pwd = $request->query->get('pwd');
 
         $users = $repository->findByLogin($login);
-
-        if(!$users)
+        if(!$login || !$pwd)
+        {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
+        else if(!$users)
         {
             throw $this->createNotFoundException(
                 'No user found for Login '.$login
@@ -132,6 +161,10 @@ class UtilisateurController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function updateAction(Request $request)
     {
         $doctrine = $this->getDoctrine();

@@ -24,10 +24,15 @@ class commentaire
     /**
      * @var string
      *
-     * @ORM\Column(name="contenu", type="string", length=255)
+     * @ORM\Column(name="contenu", type="text")
      */
     private $contenu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="\restBundle\Entity\utilisateur", inversedBy="commentaire")
+     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
+     */
+    private $utilisateur;
 
     /**
      * Get id
@@ -60,5 +65,28 @@ class commentaire
     public function getContenu()
     {
         return $this->contenu;
+    }
+
+    /**
+     * Set utilisateur
+     *
+     * @param \restBundle\Entity\utilisateur $utilisateur
+     * @return commentaire
+     */
+    public function setUtilisateur(\restBundle\Entity\utilisateur $utilisateur = null)
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Get utilisateur
+     *
+     * @return \restBundle\Entity\utilisateur 
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
     }
 }

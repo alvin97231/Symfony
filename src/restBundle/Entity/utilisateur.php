@@ -61,9 +61,18 @@ class utilisateur
      */
     private $idees;
 
+    /**
+     * @ORM\OneToMany(targetEntity="commentaire", mappedBy="utilisateur")
+     */
+    private $commentaires;
+
+    /**
+     * utilisateur constructor.
+     */
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->idees = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     /**
@@ -222,5 +231,38 @@ class utilisateur
     public function getIdees()
     {
         return $this->idees;
+    }
+
+    /**
+     * Add commentaires
+     *
+     * @param \restBundle\Entity\commentaire $commentaires
+     * @return utilisateur
+     */
+    public function addCommentaire(\restBundle\Entity\commentaire $commentaires)
+    {
+        $this->commentaires[] = $commentaires;
+
+        return $this;
+    }
+
+    /**
+     * Remove commentaires
+     *
+     * @param \restBundle\Entity\commentaire $commentaires
+     */
+    public function removeCommentaire(\restBundle\Entity\commentaire $commentaires)
+    {
+        $this->commentaires->removeElement($commentaires);
+    }
+
+    /**
+     * Get commentaires
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommentaires()
+    {
+        return $this->commentaires;
     }
 }

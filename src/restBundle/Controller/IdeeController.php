@@ -14,14 +14,29 @@ use Symfony\Component\HttpFoundation\Request;
 use restBundle\Entity\idee;
 use restBundle\Entity\utilisateur;
 
+/**
+ * Class IdeeController
+ * @package restBundle\Controller
+ */
 class IdeeController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function getAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
         $repository = $doctrine->getRepository('restBundle:idee');
 
         $id = $request->get('id');
+
+        if(!$id)
+        {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
 
         $idee = $repository->findById($id);
 
@@ -54,6 +69,10 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function addAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -104,6 +123,10 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function deleteAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
@@ -111,6 +134,13 @@ class IdeeController extends Controller
         $repository = $doctrine->getRepository('restBundle:idee');
 
         $id = $request->query->get('id');
+
+        if(!$id)
+        {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
 
         $idee = $repository->findById($id);
 
@@ -133,11 +163,21 @@ class IdeeController extends Controller
         return $response;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function updateAction(Request $request)
     {
         $id = $request->query->get('id');
         $titre = $request->query->get('titre');
         $contenu = $request->query->get('contenu');
+
+        if (!$id || $titre || $contenu) {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
 
         $em = $this->getDoctrine()->getManager();
         $idee = $em->getRepository('restBundle:idee')->find($id);
