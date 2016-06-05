@@ -74,12 +74,24 @@ class utilisateur
     private $commentaires;
 
     /**
+     * @ORM\OneToMany(targetEntity="vote_commentaire", mappedBy="utilisateur")
+     */
+    private $votes_commentaire;
+
+    /**
+     * @ORM\OneToMany(targetEntity="vote_idee", mappedBy="utilisateur")
+     */
+    private $votes_idee;
+
+    /**
      * utilisateur constructor.
      */
     public function __construct()
     {
         $this->idees = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
+        $this->votes_commentaire = new ArrayCollection();
+        $this->votes_idee = new ArrayCollection();
     }
 
     /**
@@ -294,5 +306,71 @@ class utilisateur
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Add votes_commentaire
+     *
+     * @param \restBundle\Entity\vote_commentaire $votesCommentaire
+     * @return utilisateur
+     */
+    public function addVotesCommentaire(\restBundle\Entity\vote_commentaire $votesCommentaire)
+    {
+        $this->votes_commentaire[] = $votesCommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes_commentaire
+     *
+     * @param \restBundle\Entity\vote_commentaire $votesCommentaire
+     */
+    public function removeVotesCommentaire(\restBundle\Entity\vote_commentaire $votesCommentaire)
+    {
+        $this->votes_commentaire->removeElement($votesCommentaire);
+    }
+
+    /**
+     * Get votes_commentaire
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotesCommentaire()
+    {
+        return $this->votes_commentaire;
+    }
+
+    /**
+     * Add votes_idee
+     *
+     * @param \restBundle\Entity\vote_idee $votesIdee
+     * @return utilisateur
+     */
+    public function addVotesIdee(\restBundle\Entity\vote_idee $votesIdee)
+    {
+        $this->votes_idee[] = $votesIdee;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes_idee
+     *
+     * @param \restBundle\Entity\vote_idee $votesIdee
+     */
+    public function removeVotesIdee(\restBundle\Entity\vote_idee $votesIdee)
+    {
+        $this->votes_idee->removeElement($votesIdee);
+    }
+
+    /**
+     * Get votes_idee
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotesIdee()
+    {
+        return $this->votes_idee;
     }
 }
