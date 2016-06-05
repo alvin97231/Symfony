@@ -374,13 +374,13 @@ class utilisateur
         return $this->votes_idee;
     }
 
-    public function login($controller){
+    public function login($doctrine){
         if(empty($_COOKIE['authentification'])){
             $_SESSION['logged'] = 1;
             session_regenerate_id();
             $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
             $this->setToken($jeton);
-            $em = $controller->getDoctrine()->getManager();
+            $em = $doctrine->getManager();
             $em->flush();
             $vie = time() + 60; //durée de vie (ici, 7 jours)
             setcookie('authentification', "$jeton", $vie); //on crée le cookie

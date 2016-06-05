@@ -246,7 +246,7 @@ class UtilisateurController extends Controller
         
         $users = $repository->findOneBy(array('login' => $login,'password' => $pwd));
 
-        $users->login($login,$this);
+        $users->login($doctrine);
 
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
