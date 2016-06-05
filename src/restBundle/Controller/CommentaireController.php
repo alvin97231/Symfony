@@ -25,13 +25,23 @@ class CommentaireController extends Controller
 
         $id = $request->get('id');
 
+        if (!$id)
+        {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
+
         $com = $repository->findById($id);
 
-        if (!$com) {
+        if (!$com)
+        {
             throw $this->createNotFoundException(
                 'No com for this id' . $id
             );
-        } else {
+        }
+        else
+        {
             $i = $com[0];
             $arr['State'] = 'Get';
             $arr['Id'] = $i->getId();
@@ -58,9 +68,13 @@ class CommentaireController extends Controller
 
         $contenu = $request->get('contenu');
 
+        /** TODO
+         * ajouter l'id de l'idée que l'on commente et l'id de l'utilisateur qui fait le commentaire
+         * */
+
         if (!$contenu) {
             throw $this->createNotFoundException(
-                'Missing parameters in http request'
+                'Missing parameters in HTTP request'
             );
         }
 
@@ -88,6 +102,12 @@ class CommentaireController extends Controller
 
         $id = $request->query->get('id');
 
+        if (!$id) {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
+
         $com = $repository->findById($id);
 
         if (!$com) {
@@ -114,6 +134,12 @@ class CommentaireController extends Controller
     {
         $id = $request->query->get('id');
         $contenu = $request->query->get('contenu');
+
+        if (!$contenu || !$id) {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
 
         $em = $this->getDoctrine()->getManager();
         $com = $em->getRepository('restBundle:commentaire')->find($id);

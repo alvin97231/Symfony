@@ -30,6 +30,13 @@ class UtilisateurController extends Controller
         $login = $request->query->get('login');
         $pwd = $request->query->get('pwd');
 
+        if(!$login || !$pwd)
+        {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
+
         $users = $repository->findByLogin($login);
 
         if(!$users)
@@ -80,7 +87,7 @@ class UtilisateurController extends Controller
         if(!$login || !$pwd || !$prenom || !$nom || !$mail)
         {
             throw $this->createNotFoundException(
-                'Missing parameters in http request'
+                'Missing parameters in HTTP request'
             );
         }
 
@@ -123,8 +130,13 @@ class UtilisateurController extends Controller
         $pwd = $request->query->get('pwd');
 
         $users = $repository->findByLogin($login);
-
-        if(!$users)
+        if(!$login || !$pwd)
+        {
+            throw $this->createNotFoundException(
+                'Missing parameters in HTTP request'
+            );
+        }
+        else if(!$users)
         {
             throw $this->createNotFoundException(
                 'No user found for Login '.$login

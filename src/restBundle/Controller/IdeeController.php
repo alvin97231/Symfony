@@ -31,6 +31,13 @@ class IdeeController extends Controller
 
         $id = $request->get('id');
 
+        if(!$id)
+        {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
+
         $idee = $repository->findById($id);
 
         if(!$idee)
@@ -128,6 +135,13 @@ class IdeeController extends Controller
 
         $id = $request->query->get('id');
 
+        if(!$id)
+        {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
+
         $idee = $repository->findById($id);
 
         if(!$idee)
@@ -158,6 +172,12 @@ class IdeeController extends Controller
         $id = $request->query->get('id');
         $titre = $request->query->get('titre');
         $contenu = $request->query->get('contenu');
+
+        if (!$id || $titre || $contenu) {
+            throw $this->createNotFoundException(
+                'missing parameters in HTTP request'
+            );
+        }
 
         $em = $this->getDoctrine()->getManager();
         $idee = $em->getRepository('restBundle:idee')->find($id);
