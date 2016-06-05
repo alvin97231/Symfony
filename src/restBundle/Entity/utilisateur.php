@@ -64,6 +64,13 @@ class utilisateur
     private $token;
 
     /**
+     * @var date
+     *
+     * @ORM\Column(name="token_timeout", type="datetime")
+     */
+    private $token_timeout;
+
+    /**
      * @ORM\OneToMany(targetEntity="idee", mappedBy="utilisateur")
      */
     private $idees;
@@ -375,30 +382,46 @@ class utilisateur
     }
 
     public function login($doctrine){
-        if(empty($_COOKIE['authentification'])){
-            $_SESSION['logged'] = 1;
-            session_regenerate_id();
-            $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
-            $this->setToken($jeton);
-            $em = $doctrine->getManager();
-            $em->flush();
-            $vie = time() + 60; //durée de vie (ici, 7 jours)
-            setcookie('authentification', "$jeton", $vie); //on crée le cookie
-            return TRUE;
-        }else{
-            $jeton = $_COOKIE['authentification'];
-            if($jeton == $this->getToken()){
-                $_SESSION['logged'] = 1;
-                session_regenerate_id();
-                return TRUE;
-            }else{
-                return FALSE;
-            }
-        }
+        $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
+        $this->setToken($jeton);
+        $em = $doctrine->getManager();
+        $em->flush();
+        echo "connection ok avec création cookie";
+        $response = new Response();
+        $response->setContent(json_encode($jeton));
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'text/html');
+    }
+
+    public function logged($login,$token){
+
     }
 
     public function logout(){
         $_SESSION['logged'] = 0;
     }
 
+
+    /**
+     * Set token_timeout
+     *
+     * @param \DateTime $tokenTimeout
+     * @return utilisateur
+     */
+    public function setTokenTimeout($tokenTimeout)
+    {
+        $this->token_timeout = $tokenTimeout;
+
+        return $this;
+    }
+
+    /**
+     * Get token_timeout
+     *
+     * @return \DateTime 
+     */
+    public function getTokenTimeout()
+    {
+        return $this->token_timeout;
+    }
 }
