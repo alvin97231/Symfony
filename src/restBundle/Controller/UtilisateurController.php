@@ -25,30 +25,25 @@ class UtilisateurController extends Controller
     public function getAction(Request $request)
     {
         $doctrine = $this->getDoctrine();
-        $repository = $doctrine->getRepository('restBundle:utilisateur');
+        $reputilisateur = $doctrine->getRepository('restBundle:utilisateur');
+        $repidee = $doctrine->getRepository('restBundle:idee');
+        $repcommentaire = $doctrine->getRepository('restBundle:commentaire');
 
         $login = $request->query->get('login');
-        $pwd = $request->query->get('pwd');
 
-        if(!$login || !$pwd)
+        if(!$login)
         {
             throw $this->createNotFoundException(
                 'Missing parameters in HTTP request'
             );
         }
 
-        $users = $repository->findByLogin($login);
+        $users = $reputilisateur->findByLogin($login);
 
         if(!$users)
         {
             throw $this->createNotFoundException(
                 'No user for this login'
-            );
-        }
-        else if($users[0]->getPassword() != $pwd)
-        {
-            throw $this->createNotFoundException(
-                'Wrong password !!'
             );
         }
         else
@@ -58,6 +53,25 @@ class UtilisateurController extends Controller
             $arr['Mail'] = $u->getMail();
             $arr['Nom'] = $u->getNom();
             $arr['Prenom'] = $u->getPrenom();
+            $arr['Idees'] = [];
+            $arr['Commentaires'] = [];
+            $idees = $repidee->findByUtilisateur($u);
+            $commentaires = $repcommentaire->findByUtilisateur($u);
+
+            if($idees) {
+                foreach ($idees as $idee)
+                {
+                    array_push($arr['Idees'], array('id' => $idee->getId(), 'titre' => $idee->getTitre(), 'contenu' => $idee->getContenu()));
+                }
+            }
+
+            if($commentaires)
+            {
+                foreach ($commentaires as $commentaire)
+                {
+                    array_push($arr['Commentaires'],array('id'=>$commentaire->getId(), 'contenu'=>$commentaire->getContenu()));
+                }
+            }
 
             $response = new Response();
             $response->setContent(json_encode($arr));
