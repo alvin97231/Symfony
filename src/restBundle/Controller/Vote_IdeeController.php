@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: cedric
  * Date: 05/06/16
- * Time: 21:20
+ * Time: 21:59
  */
 namespace restBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use restBundle\Entity\vote_commentaire;
-class Vote_CommentaireController extends Controller
+use restBundle\Entity\vote_idee;
+class Vote_IdeeController extends Controller
 {
     /**
      * @param Request $request
@@ -21,32 +21,32 @@ class Vote_CommentaireController extends Controller
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
-        $repcom = $doctrine->getRepository('restBundle:commentaire');
+        $repcom = $doctrine->getRepository('restBundle:idee');
         $reputilisateur = $doctrine->getRepository('restBundle:utilisateur');
 
-        $id_com = $request->get('id_com');
+        $id_idee = $request->get('id_idee');
         $id_utilisateur = $request->get('id_utilisateur');
 
-        if (!$id_utilisateur || !$id_com) {
+        if (!$id_utilisateur || !$id_idee) {
             throw $this->createNotFoundException(
                 'Missing parameters in HTTP request'
             );
         }
 
-        $tabcommentaire = $repcom->findById($id_com);
+        $tabidee = $repcom->findById($id_idee);
         $tabutilisateur = $reputilisateur->findById($id_utilisateur);
 
-        if(!$tabcommentaire || !$tabutilisateur)
+        if(!$tabidee || !$tabutilisateur)
         {
             throw $this->createNotFoundException(
-                'commentaire ou utlisateur inconnu'
+                'commentaire ou idee inconnu'
             );
         }
 
-        $vote_com = new vote_commentaire();
-        $vote_com   ->setCommentaire($tabcommentaire[0])
+        $vote_idee = new vote_idee();
+        $vote_idee  ->setIdee($tabidee[0])
                     ->setUtilisateur($tabutilisateur[0]);
-        $em->persist($vote_com);
+        $em->persist($vote_idee);
         $em->flush();
 
         $response = new Response();
@@ -64,26 +64,26 @@ class Vote_CommentaireController extends Controller
     {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
-        $repository = $doctrine->getRepository('restBundle:vote_commentaire');
+        $repository = $doctrine->getRepository('restBundle:vote_idee');
 
-        $idvote_com = $request->query->get('idvote_com');
+        $idvote_idee = $request->query->get('idvote_idee');
 
-        if (!$idvote_com) {
+        if (!$idvote_idee) {
             throw $this->createNotFoundException(
                 'Missing parameters in HTTP request'
             );
         }
 
-        $vote_com = $repository->findById($idvote_com);
+        $vote_idee = $repository->findById($idvote_idee);
 
-        if (!$vote_com) {
+        if (!$vote_idee) {
             throw $this->createNotFoundException(
                 'vote non trouvée'
             );
         }
         else
         {
-            $em->remove($vote_com[0]);
+            $em->remove($vote_idee[0]);
             $em->flush();
 
             $response = new Response();
