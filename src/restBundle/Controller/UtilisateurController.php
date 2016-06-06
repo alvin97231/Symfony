@@ -244,16 +244,16 @@ class UtilisateurController extends Controller
         $em = $doctrine->getManager();
         $repository = $doctrine->getRepository('restBundle:utilisateur');
         
-        $users = $repository->findOneBy(array('login' => $login,'password' => $pwd));
+        $users = $repository->findByLogin($login);
 
-        if(!$users)
+        if(!$users[0])
         {
             throw $this->createNotFoundException(
                 'No user found for Login '.$login
             );
         }
 
-        $users->login($doctrine);
+        $users[0]->login($doctrine,$pwd);
 
         $response = new Response();
         $response->setStatusCode(Response::HTTP_OK);
@@ -263,14 +263,12 @@ class UtilisateurController extends Controller
     }
 
     public function logoutAction(Request $request)
-    {
-        $login = $request->query->get('login');
-        $token = $_COOKIE['authentification'];
+    {/*
         $deco = $request->query->get('deco');
 
         if($deco == true){
-            $users->logout($doctrine);
-        }
+            $users[0]->logout($doctrine);
+        }*/
     }
 
     

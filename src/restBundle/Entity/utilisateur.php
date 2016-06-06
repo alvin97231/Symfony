@@ -4,6 +4,7 @@ namespace restBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Response;
 /**
  * utilisateur
  *
@@ -381,24 +382,49 @@ class utilisateur
         return $this->votes_idee;
     }
 
-    public function login($doctrine){
-        $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
-        $this->setToken($jeton);
-        $em = $doctrine->getManager();
-        $em->flush();
-        echo "connection ok avec création cookie";
-        $response = new Response();
-        $response->setContent(json_encode($jeton));
-        $response->setStatusCode(Response::HTTP_OK);
-        $response->headers->set('Content-Type', 'text/html');
+    public function login($doctrine,$pwd){
+        if($pwd == $this->getPassword()){
+            echo " TEST";
+            $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
+            $this->setToken($jeton);
+            $time = time()+ 60 * 60 * 24 *7;
+            $this->setTokenTimeout(date_create(date('Y-m-d', $time)));
+            $em = $doctrine->getManager();
+            $em->flush();
+            echo "connection ok";
+            $response = new Response();
+            $response->setContent(json_encode($jeton));
+            $response->setStatusCode(Response::HTTP_OK);
+            $response->headers->set('Content-Type', 'text/html');
+
+            return $response;
+        }else{
+            $response = new Response();
+            $response->setContent(json_encode("erreur"));
+            $response->setStatusCode(Response::HTTP_NOT_FOUND);
+            $response->headers->set('Content-Type', 'text/html');
+            return $response;
+        }
     }
 
-    public function logged($login,$token){
-
+    public function isLogged($doctrine,$token){
+        if($token == $this->getToken()){
+            $time = time()+ 60 * 60 * 24 *7;
+            $this->setTokenTimeout(date_create(date('Y-m-d', $time)));
+            $em = $doctrine->getManager();
+            $em->flush();
+            return TRUE;
+        }else{
+            return FALSE;
+        }
     }
 
-    public function logout(){
-        $_SESSION['logged'] = 0;
+    public function logout($doctrine,$token){
+        if($token == $this->getToken()){
+            $this->setToken("");
+            $em = $doctrine->getManager();
+            $em->flush();
+        }
     }
 
 
