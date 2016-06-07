@@ -382,16 +382,24 @@ class utilisateur
         return $this->votes_idee;
     }
 
-    public function login($doctrine,$pwd){
+
+    /**
+     *
+     * login() permet de connecter un utilisateur en lui générant un token qui sera envoyé dans
+     * toutes les requetes HTTP.
+     *
+     * @param $doctrine
+     * @param $pwd
+     * @return Response
+     */
+    public function login($doctrine, $pwd){
         if($pwd == $this->getPassword()){
-            echo " TEST";
             $jeton = md5(uniqid(rand(), TRUE)); //création d'un jeton
             $this->setToken($jeton);
             $time = time()+ 60 * 60 * 24 *7;
             $this->setTokenTimeout(date_create(date('Y-m-d', $time)));
             $em = $doctrine->getManager();
             $em->flush();
-            echo "connection ok";
             $response = new Response();
             $response->setContent(json_encode($jeton));
             $response->setStatusCode(Response::HTTP_OK);
@@ -407,7 +415,15 @@ class utilisateur
         }
     }
 
-    public function isLogged($doctrine,$token){
+    /**
+     *
+     * isLogged permet de vérifier si l'utilisateur est connecté.
+     *
+     * @param $doctrine
+     * @param $token
+     * @return bool
+     */
+    public function isLogged($doctrine, $token){
         if($token == $this->getToken()){
             $time = time()+ 60 * 60 * 24 *7;
             $this->setTokenTimeout(date_create(date('Y-m-d', $time)));
@@ -419,7 +435,14 @@ class utilisateur
         }
     }
 
-    public function logout($doctrine,$token){
+    /**
+     *
+     * logout permet de deconnceté l'utilisateur en supriment de token dans la base de données
+     *
+     * @param $doctrine
+     * @param $token
+     */
+    public function logout($doctrine, $token){
         if($token == $this->getToken()){
             $this->setToken("");
             $em = $doctrine->getManager();

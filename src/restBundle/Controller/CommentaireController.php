@@ -15,6 +15,9 @@ use restBundle\Entity\commentaire;
 class CommentaireController extends Controller
 {
     /**
+     *
+     * Permet de recupérer un commentaire
+     *
      * @param Request $request
      * @return Response
      */
@@ -57,6 +60,9 @@ class CommentaireController extends Controller
     }
 
     /**
+     *
+     * Permet d'ajouter un commentaire
+     *
      * @param Request $request
      * @return Response
      */
@@ -91,6 +97,9 @@ class CommentaireController extends Controller
     }
 
     /**
+     *
+     * permet de supprimer un commentaire
+     *
      * @param Request $request
      * @return Response
      */
@@ -127,6 +136,9 @@ class CommentaireController extends Controller
     }
 
     /**
+     *
+     * Permet de mettre à jour un commentaire
+     *
      * @param Request $request
      * @return Response
      */
